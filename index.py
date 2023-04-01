@@ -281,6 +281,24 @@ def ForumLink(id):
             resp = jsonify("Already Deleted!!")
             resp.status_code = 208
             return resp
+    
+    if( request.method =='PATCH'):
+        _isUrgent=request.json['isUrgent']
+        dict ={}
+        dict['isUrgent'] = _isUrgent
+        if(link_collection.find_one({"_id":ObjectId(id),'isUrgent':False})):
+
+            # update values in database
+            link_collection.find_one_and_update({"_id":ObjectId(id)},{"$set":dict})
+            resp = jsonify("Website updated")
+            resp.status_code = 200
+            return resp    
+        else:
+            resp = jsonify("Already Updated!!")
+            resp.status_code = 208
+            return resp        
+
+        
 
 # Error Handling...
 @app.errorhandler(404)
